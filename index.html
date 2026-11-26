@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kushagreek Basu</title>
+<meta name="description" content="Kushagreek Basu: high-fidelity simulation and scientific machine learning for turbulent, reacting and high-speed flows. Research projects and Moksha Motorsports.">
+<meta property="og:title" content="Kushagreek Basu">
+<meta property="og:description" content="Simulation and scientific machine learning for turbulent, reacting and high-speed flows.">
+<meta property="og:image" content="assets/strip_fire.jpg">
+<meta name="theme-color" content="#04060c">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2304060c'/%3E%3Cpath d='M18 46c6-18 22-10 28-28' stroke='%23ff8a3d' stroke-width='5' fill='none' stroke-linecap='round'/%3E%3Cpath d='M18 30c8-8 16 2 28-8' stroke='%234fb3ff' stroke-width='5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<canvas id="fluid" aria-hidden="true"></canvas>
+<div class="grain" aria-hidden="true"></div>
+<div class="cursor" aria-hidden="true"><div class="cursor-dot"></div><div class="cursor-ring"><span class="cursor-label"></span></div></div>
+
+<header class="nav">
+  <a href="#top" class="mark" aria-label="Back to top">K<span>B</span></a>
+  <nav>
+    <a href="#research" class="magnet">Research</a>
+    <a href="#moksha" class="magnet">Moksha</a>
+    <a href="#contact" class="magnet">Contact</a>
+  </nav>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <p class="eyebrow reveal">Mechanical Engineering &nbsp;/&nbsp; IIT Gandhinagar</p>
+    <h1 class="title" aria-label="Kushagreek Basu">
+      <span class="line"><span class="word">Kushagreek</span></span>
+      <span class="line"><span class="word accent">Basu</span></span>
+    </h1>
+    <p class="lede reveal">High-fidelity simulation and scientific machine learning for turbulent, reacting and high-speed flows.</p>
+    <div class="hero-foot">
+      <p class="hint reveal"><span class="pulse"></span>The background is a live fluid simulation. Move to stir it.</p>
+      <a href="#research" class="scroll reveal" aria-label="Scroll to research"><span>Scroll</span><i></i></a>
+    </div>
+  </section>
+
+  <section id="research" class="section">
+    <div class="sec-head">
+      <span class="sec-num reveal">01</span>
+      <h2 class="sec-title reveal">Research</h2>
+      <p class="sec-sub reveal">Hover a project for a preview, then open it.</p>
+    </div>
+    <ol class="rows" id="rows"></ol>
+  </section>
+
+  <section id="moksha" class="section moksha">
+    <div class="sec-head">
+      <span class="sec-num reveal">02</span>
+      <h2 class="sec-title reveal">Moksha Motorsports</h2>
+      <p class="sec-sub reveal">Vice-Captain, Suspension Lead and Finance Coordinator &nbsp;/&nbsp; 2024 to 2026</p>
+    </div>
+    <div class="moksha-grid">
+      <div class="moksha-text">
+        <p class="big reveal">The IIT Gandhinagar student team building an electric off-road vehicle for eBAJA SAEINDIA.</p>
+        <div class="stats" id="moksha-stats"></div>
+        <button class="open-btn magnet" data-open="moksha"><span>Open project</span><i>&rarr;</i></button>
+      </div>
+      <figure class="susp reveal">
+        <canvas id="susp" aria-label="Interactive double-wishbone suspension sketch"></canvas>
+        <figcaption><span>Drag the wheel</span><span id="susp-read">camber 0.0&deg;</span></figcaption>
+      </figure>
+    </div>
+    <div class="strip" id="moksha-strip"></div>
+  </section>
+
+  <section id="contact" class="section contact">
+    <div class="sec-head">
+      <span class="sec-num reveal">03</span>
+      <h2 class="sec-title reveal">Contact</h2>
+    </div>
+    <p class="contact-big reveal">Let&rsquo;s talk about flows, flames and learning machines.</p>
+    <div class="contact-links">
+      <a class="pill magnet" href="https://www.linkedin.com/in/kushagreek-basu-928298284" target="_blank" rel="noopener">LinkedIn <i>&nearr;</i></a>
+      <a class="pill magnet" href="https://github.com/KushagreekBasu" target="_blank" rel="noopener">GitHub <i>&nearr;</i></a>
+    </div>
+    <div class="fire-strip reveal"><img src="assets/strip_fire.jpg" alt="Volume rendering of an igniting hydrogen-air mixing layer, from my PeleC simulation" loading="lazy"></div>
+    <footer class="foot">
+      <span>&copy; 2026 Kushagreek Basu</span>
+      <span>Background: real-time GPU Navier&ndash;Stokes solver. Flame renders: my PeleC direct numerical simulation.</span>
+    </footer>
+  </section>
+</main>
+
+<div class="peek" aria-hidden="true">
+  <canvas class="peek-canvas"></canvas>
+  <video class="peek-video" muted loop playsinline preload="none"></video>
+  <span class="peek-tag"></span>
+</div>
+
+<div class="case" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="case-title">
+  <div class="case-bar">
+    <span class="case-count"></span>
+    <div class="case-nav">
+      <button class="case-prev magnet" aria-label="Previous project">&larr;</button>
+      <button class="case-next magnet" aria-label="Next project">&rarr;</button>
+      <button class="case-close magnet" aria-label="Close">Close <i>&times;</i></button>
+    </div>
+  </div>
+  <div class="case-body">
+    <div class="case-media">
+      <div class="stage">
+        <canvas class="stage-canvas"></canvas>
+        <video class="stage-video" muted loop playsinline preload="none"></video>
+        <img class="stage-img" alt="">
+        <span class="stage-cap"></span>
+      </div>
+      <div class="thumbs"></div>
+    </div>
+    <article class="case-info">
+      <p class="case-eyebrow"></p>
+      <h3 class="case-title" id="case-title"></h3>
+      <p class="case-role"></p>
+      <p class="case-lede"></p>
+      <div class="case-stats"></div>
+      <ul class="case-points"></ul>
+      <div class="case-pubs"></div>
+      <div class="case-links"></div>
+    </article>
+  </div>
+</div>
+
+<script src="js/fluid.js"></script>
+<script src="js/visuals.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

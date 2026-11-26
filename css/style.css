@@ -272,7 +272,6 @@ main { position: relative; z-index: 2; }
   .nav { mix-blend-mode: normal; background: linear-gradient(180deg, rgba(4, 6, 12, 0.92) 30%, rgba(4, 6, 12, 0)); padding-bottom: 30px; }
   .case-media { position: relative; }
   .peek { display: none; }
-  .hero { justify-content: flex-end; padding-bottom: 56px; }
   .portrait { left: 50%; right: auto; top: 64px; bottom: auto; height: 50vh; height: 50svh; transform: translate(-50%, 28px); }
   .loaded .portrait { opacity: 0.95; transform: translate(-50%, 0); }
   .gallery { grid-template-columns: 1fr 1fr; grid-auto-rows: 42vw; }

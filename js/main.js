@@ -37,16 +37,24 @@
       tags: "RANS · RL · surrogates", years: "2026 &mdash;",
       eyebrow: "Apr 2026 to present &nbsp;/&nbsp; Visiting research student",
       role: "FLAME Lab, Indian Institute of Science, Bengaluru &nbsp;·&nbsp; Advisor: Prof. Konduri Aditya",
-      lede: "Teaching a controller to fire wall jets before a scramjet inlet unstarts, the moment its shock system is pushed out and the engine loses its airflow.",
-      stats: [["0.2 %", "ramp-shock angle vs oblique-shock theory"], ["7.8&ndash;8.1&times;", "freestream pressure: the unstart boundary"], ["47", "core-hours per 0.1 ms of CFD"], ["2", "conference papers, SAROD 2026 and NAPC 2027"]],
+      lede: "Teaching a controller to fire wall jets before a scramjet inlet unstarts, the moment its shock system is pushed out and the engine loses its airflow. Because every millisecond of CFD is expensive, the agent learns mostly inside learned world models of the flow.",
+      stats: [["7.8&ndash;8.1&times;", "freestream pressure at the outlet: the unstart boundary"], ["10", "wall sensors chosen by co-kurtosis, warning about 0.5 ms ahead"], ["2.8 %", "GRU world-model sensor error 1 ms ahead, half that of DMDc"], ["47", "core-hours per 0.1 ms of CFD"]],
       points: [
-        "Modelled the inlet&ndash;isolator in 2-D RANS (OpenFOAM, k&ndash;&omega; SST).",
-        "Showed that jets fired early prevent unstart.",
-        "Posed jet control as an event-triggered Soft Actor-Critic problem.",
-        "Because CFD is so expensive, I am designing a surrogate ensemble that advances the state and calls CFD only when its members disagree, driven by a handful of wall sensors."
+        "Modelled the inlet&ndash;isolator in 2-D RANS (OpenFOAM, k&ndash;&omega; SST); the ramp-shock angle is within 0.2 % of oblique-shock theory.",
+        "Showed that jets fired early prevent unstart, and posed jet control as an event-triggered Soft Actor-Critic problem.",
+        "Picked ten wall sensors by co-kurtosis, a measure of extreme events; they warn of unstart about half a millisecond ahead.",
+        "Benchmarked six surrogates (DMDc, DeepONet, Koopman autoencoder, Dreamer, GRU world model); the GRU world model forecasts the sensors 1 ms ahead within 2.8 %.",
+        "Working towards: training the agent against an ensemble of these world models, calling CFD only when the members disagree."
       ],
-      peek: { scene: "scramjet" },
-      media: [{ scene: "scramjet", cap: "Illustration: oblique shocks, shock train and control jets (not simulation data)" }],
+      peek: { video: "assets/scramjet/inlet_velocity.mp4", tag: "OpenFOAM · inlet velocity" },
+      media: [
+        { video: "assets/scramjet/inlet_velocity.mp4", poster: "assets/scramjet/inlet_poster.jpg", cap: "OpenFOAM simulation of the inlet and isolator: velocity magnitude, 0 to 740 m/s" },
+        { img: "assets/scramjet/started_flow.jpg", light: true, cap: "Started inlet: numerical schlieren, pressure field and wall pressure" },
+        { img: "assets/scramjet/sensors.jpg", light: true, cap: "The ten wall sensors picked by co-kurtosis, numbered in pick order" },
+        { img: "assets/scramjet/wm_forecast.jpg", light: true, cap: "CFD vs GRU world-model forecast around the unstart onset, with error maps against DMDc" },
+        { img: "assets/scramjet/lead_error.jpg", light: true, cap: "Forecast error against lead time for six surrogate models, sensors and whole field" },
+        { scene: "scramjet", cap: "Illustration: ramp shock, shock train, wall sensors and control jets" }
+      ],
       pubs: [
         "<b>SAROD 2026</b>, Bengaluru &mdash; first author, oral presentation",
         "<b>NAPC 2027</b>, IIT Hyderabad &mdash; first author, accepted"
@@ -55,8 +63,8 @@
     },
     {
       id: "fno", kind: "research",
-      title: "Geometry- and physics-encoded neural operator",
-      tags: "FNO · RANS · airfoils", years: "2026 &mdash;",
+      title: "GP-FNO: a geometry- and physics-encoded neural operator",
+      tags: "GP-FNO · RANS · airfoils", years: "2026 &mdash;",
       eyebrow: "Jan 2026 to present &nbsp;/&nbsp; Co-first author with A. Sinha",
       role: "IIT Gandhinagar &nbsp;·&nbsp; Advisor: Prof. Shubhangi Bansude",
       lede: "A Fourier neural operator that learns turbulent flow over airfoils from sparse data, with the geometry and the physics built into the network.",
@@ -64,10 +72,18 @@
       points: [
         "Trained on a body-fitted grid from 88 RANS solutions; the training data follow NASA&rsquo;s CFL3D and Ladson&rsquo;s NACA 0012 experiments.",
         "Studied its inductive and learning biases, with physics placed in the network or in the loss; enforcing mass conservation cut overfitting tenfold.",
-        "Building no-slip into the network is what lets it locate flow separation."
+        "Building no-slip into the network is what lets it locate flow separation.",
+        "Of eight architectures, including U-Net and Transolver, it is the cheapest (6.5 GFLOP) and ties the best on surface pressure.",
+        "On eight unseen airfoils, checked against OpenFOAM, its median errors are 5.3 % in surface pressure and 3.2 % in lift."
       ],
       peek: { scene: "fno" },
-      media: [{ scene: "fno", cap: "Illustration: flow past a cambered airfoil, Fourier modes and sparse sample points" }],
+      media: [
+        { img: "assets/fno/architecture.jpg", light: true, cap: "GP-FNO: geometry encoding, dual-path Fourier layers and the physics-enhanced loss" },
+        { img: "assets/fno/heldout_fields.jpg", light: true, cap: "Held-out case: reference (Fluent) vs GP-FNO, with absolute error" },
+        { img: "assets/fno/heldout_surfaces.jpg", light: true, cap: "Surface pressure and skin friction on held-out cases" },
+        { img: "assets/fno/new_airfoils.jpg", light: true, cap: "An unseen airfoil, checked against OpenFOAM" },
+        { scene: "fno", cap: "Illustration: flow past a cambered airfoil, Fourier modes and sparse sample points" }
+      ],
       pubs: [
         "<b>AeSI CFD Symposium 2026</b>, IIT Madras &mdash; oral presentation",
         "<b>TFEC 2027</b>, Dallas &mdash; accepted",
@@ -91,33 +107,14 @@
       media: [{ scene: "pinn", cap: "Illustration: deep-stall wake behind an airfoil at 25°, with sparse observations" }],
       pubs: ["<b>International AI-CFD Symposium 2026</b> &mdash; poster, top 5 among master&rsquo;s and PhD presenters"],
       links: [["Poster", "https://drive.google.com/drive/folders/1l2I8d9l82uNp2jDTn-PUjFvqcvj9woEW?usp=sharing"]]
-    },
-    {
-      id: "moksha", kind: "moksha",
-      title: "Moksha Motorsports",
-      tags: "eBAJA SAEINDIA", years: "2024 &mdash; 2026",
-      eyebrow: "May 2024 to May 2026 &nbsp;/&nbsp; eBAJA SAEINDIA",
-      role: "Vice-Captain, Suspension Lead and Finance Coordinator &nbsp;·&nbsp; IIT Gandhinagar",
-      lede: "The IIT Gandhinagar student team that designs and builds an electric off-road vehicle for eBAJA SAEINDIA.",
-      stats: [["3rd / 95", "MathWorks Simulation event, eBAJA 2026"], ["&#8377;18.9 L", "season budget raised and managed"], ["4.9&ndash;7.2", "FEA safety factors, arms and hubs"], ["1st", "time the team cleared both technical inspections"]],
-      points: [
-        "Co-led the team&rsquo;s first double-wishbone suspension, with its arms and hubs checked in ANSYS to safety factors of 4.9&ndash;7.2.",
-        "Raised and managed the INR 18.9 lakh season budget, including INR 6.14 lakh from industrial sponsorship.",
-        "At eBAJA 2026 the vehicle cleared both technical inspections for the first time in the team&rsquo;s history.",
-        "Placed 3rd nationally, among 95 teams, in the MathWorks Simulation event at eBAJA 2026."
-      ],
-      peek: { img: "assets/moksha_baja2026.jpg" },
-      media: [
-        { img: "assets/moksha_baja2026.jpg", cap: "The 2026 vehicle at eBAJA SAEINDIA 2026" },
-        { img: "assets/moksha_frame.jpg", cap: "Spaceframe and double-wishbone suspension during assembly" },
-        { scene: "suspension", cap: "Interactive sketch: drag the wheel to move the double wishbone" },
-        { img: "assets/moksha_fea_knuckle_stress.jpg", cap: "Suspension FEA in ANSYS" },
-        { img: "assets/moksha_fea_hub_stress.jpg", cap: "Suspension FEA in ANSYS" },
-        { img: "assets/moksha_fea_arm_stress.jpg", cap: "Suspension FEA in ANSYS: wishbone arm" },
-        { img: "assets/moksha_fea_knuckle_mesh.jpg", cap: "Suspension FEA in ANSYS: loads and constraints" }
-      ],
-      pubs: [], links: []
     }
+  ];
+
+  const GALLERY = [
+    { img: "assets/moksha/team_ebaja2026.jpg", cap: "The team at eBAJA SAEINDIA 2026" },
+    { img: "assets/moksha/frame_assembly.jpg", cap: "Spaceframe and suspension during assembly" },
+    { img: "assets/moksha/car_ebaja2026.jpg", cap: "The 2026 vehicle at eBAJA SAEINDIA" },
+    { img: "assets/moksha/welding.jpg", cap: "Welding the spaceframe" }
   ];
 
   const $ = (s, r = document) => r.querySelector(s);
@@ -207,8 +204,7 @@
   document.addEventListener("pointerover", (e) => {
     const t = e.target;
     if (t.closest(".row button")) setCursor("view", "Open");
-    else if (t.closest("#susp")) setCursor("drag");
-    else if (t.closest(".strip button")) setCursor("view", "View");
+    else if (t.closest(".gallery button")) setCursor("view", "View");
     else if (t.closest("a, button")) setCursor("hover");
     else setCursor(null);
   });
@@ -254,7 +250,7 @@
       peekRunner = window.Viz.create(p.peek.scene, peekCanvas);
       peekRunner.start();
     }
-    peekTag.textContent = p.peek.video ? "PeleC DNS · live render" : "Live illustration";
+    peekTag.textContent = p.peek.tag || (p.peek.video ? "PeleC DNS · OH and vortex tubes" : "Live illustration");
     peek.classList.add("on");
     peekOn = true;
     P.ts = 1;
@@ -295,32 +291,45 @@
   }
   requestAnimationFrame(tick);
 
-  /* ---------------- moksha ---------------- */
-  const moksha = PROJECTS.find((p) => p.id === "moksha");
-  $("#moksha-stats").innerHTML = moksha.stats.map((s) => `<div class="stat reveal"><b>${s[0]}</b><span>${s[1]}</span></div>`).join("");
-  const strip = $("#moksha-strip");
-  moksha.media.forEach((m, i) => {
-    if (!m.img) return;
+  /* ---------------- moksha gallery + lightbox ---------------- */
+  const gal = $("#gallery"), lb = $(".lb"), lbImg = $(".lb-img"), lbCap = $(".lb-cap");
+  let lbIdx = 0;
+  GALLERY.forEach((g, i) => {
     const b = document.createElement("button");
     b.type = "button";
-    b.className = "reveal";
-    b.innerHTML = `<img src="${m.img}" alt="${m.cap}" loading="lazy"><span>${m.cap.replace("Suspension FEA in ANSYS: ", "FEA: ").replace("Suspension FEA in ANSYS", "FEA")}</span>`;
-    b.addEventListener("click", (e) => openCase("moksha", e.clientX, e.clientY, i));
-    strip.appendChild(b);
+    b.className = `g${i + 1} reveal`;
+    b.setAttribute("aria-label", `View photo: ${g.cap}`);
+    b.innerHTML = `<img src="${g.img}" alt="${g.cap}" loading="lazy"><span>${g.cap}</span>`;
+    b.addEventListener("click", () => openLb(i));
+    gal.appendChild(b);
   });
-  $("[data-open=moksha]").addEventListener("click", (e) => openCase("moksha", e.clientX, e.clientY));
-
-  const suspCanvas = $("#susp"), suspRead = $("#susp-read");
-  const susp = window.Viz.create("suspension", suspCanvas, { readout: (st) => { suspRead.textContent = `camber ${st.camber.toFixed(1)}°  ·  ${st.travel >= 0 ? "bump" : "droop"} ${(Math.abs(st.travel) * 100).toFixed(0)}`; } });
-  function canvasXY(cv, e) { const r = cv.getBoundingClientRect(); return [(e.clientX - r.left) * cv.width / r.width, (e.clientY - r.top) * cv.height / r.height]; }
-  function bindDrag(cv, run) {
-    cv.addEventListener("pointerdown", (e) => { cv.setPointerCapture(e.pointerId); run.scene.pointerDown(...canvasXY(cv, e)); e.stopPropagation(); });
-    cv.addEventListener("pointermove", (e) => run.scene.pointerMove(...canvasXY(cv, e)));
-    cv.addEventListener("pointerup", () => run.scene.pointerUp());
-    cv.addEventListener("pointercancel", () => run.scene.pointerUp());
+  function showLb(i) {
+    lbIdx = (i + GALLERY.length) % GALLERY.length;
+    lbImg.style.opacity = 0;
+    setTimeout(() => { lbImg.src = GALLERY[lbIdx].img; lbImg.alt = GALLERY[lbIdx].cap; lbCap.textContent = `${lbIdx + 1} / ${GALLERY.length}  ·  ${GALLERY[lbIdx].cap}`; lbImg.style.opacity = 1; }, lb.classList.contains("open") ? 180 : 0);
   }
-  bindDrag(suspCanvas, susp);
-  new IntersectionObserver((es) => es.forEach((e) => (e.isIntersecting ? susp.start() : susp.stop())), { threshold: 0.05 }).observe(suspCanvas);
+  function openLb(i) {
+    showLb(i);
+    lb.classList.add("open");
+    lb.setAttribute("aria-hidden", "false");
+    document.body.classList.add("locked");
+    setTimeout(() => $(".lb-close").focus({ preventScroll: true }), 200);
+  }
+  function closeLb() {
+    lb.classList.remove("open");
+    lb.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("locked");
+  }
+  $(".lb-close").addEventListener("click", closeLb);
+  $(".lb-prev").addEventListener("click", () => showLb(lbIdx - 1));
+  $(".lb-next").addEventListener("click", () => showLb(lbIdx + 1));
+  lb.addEventListener("click", (e) => { if (e.target === lb) closeLb(); });
+  document.addEventListener("keydown", (e) => {
+    if (!lb.classList.contains("open")) return;
+    if (e.key === "Escape") closeLb();
+    if (e.key === "ArrowRight") showLb(lbIdx + 1);
+    if (e.key === "ArrowLeft") showLb(lbIdx - 1);
+  });
 
   /* ---------------- case overlay ---------------- */
   const caseEl = $(".case"), stage = $(".stage"), stCanvas = $(".stage-canvas"), stVideo = $(".stage-video"), stImg = $(".stage-img"), stCap = $(".stage-cap");
@@ -335,26 +344,17 @@
       stVideo.classList.add("show");
     } else if (m.scene) {
       stageRunner = window.Viz.create(m.scene, stCanvas);
-      if (m.scene === "suspension") bindDragOnce(stCanvas, stageRunner);
       stageRunner.start();
       stCanvas.classList.add("show");
     } else {
       stImg.src = m.img; stImg.alt = m.cap;
       stImg.classList.add("show");
     }
+    stage.classList.toggle("light", !!m.light);
     stCap.textContent = m.cap;
   }
-  let stageDragBound = null;
-  function bindDragOnce(cv, run) {
-    stageDragBound = run;
-    if (cv.dataset.bound) return;
-    cv.dataset.bound = "1";
-    cv.addEventListener("pointerdown", (e) => { if (stageDragBound && stageDragBound.scene.pointerDown) { cv.setPointerCapture(e.pointerId); stageDragBound.scene.pointerDown(...canvasXY(cv, e)); } });
-    cv.addEventListener("pointermove", (e) => { if (stageDragBound && stageDragBound.scene.pointerMove) stageDragBound.scene.pointerMove(...canvasXY(cv, e)); });
-    cv.addEventListener("pointerup", () => { if (stageDragBound && stageDragBound.scene.pointerUp) stageDragBound.scene.pointerUp(); });
-  }
   function fill(p, startIdx) {
-    $(".case-count").textContent = `${String(PROJECTS.indexOf(p) + 1).padStart(2, "0")} / ${String(PROJECTS.length).padStart(2, "0")}  ·  ${p.kind === "research" ? "Research" : "Moksha"}`;
+    $(".case-count").textContent = `${String(PROJECTS.indexOf(p) + 1).padStart(2, "0")} / ${String(PROJECTS.length).padStart(2, "0")}  ·  Research`;
     $(".case-eyebrow").innerHTML = p.eyebrow;
     $(".case-title").innerHTML = p.title;
     $(".case-role").innerHTML = p.role;

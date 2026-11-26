@@ -12,7 +12,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2304060c'/%3E%3Cpath d='M18 46c6-18 22-10 28-28' stroke='%23ff8a3d' stroke-width='5' fill='none' stroke-linecap='round'/%3E%3Cpath d='M18 30c8-8 16 2 28-8' stroke='%234fb3ff' stroke-width='5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -37,10 +37,6 @@
       <span class="line"><span class="word accent">Basu</span></span>
     </h1>
     <p class="lede reveal">High-fidelity simulation and scientific machine learning for turbulent, reacting and high-speed flows.</p>
-    <div class="hero-foot">
-      <p class="hint reveal"><span class="pulse"></span>The background is a live fluid simulation. Move to stir it.</p>
-      <a href="#research" class="scroll reveal" aria-label="Scroll to research"><span>Scroll</span><i></i></a>
-    </div>
   </section>
 
   <section id="research" class="section">
@@ -56,20 +52,10 @@
     <div class="sec-head">
       <span class="sec-num reveal">02</span>
       <h2 class="sec-title reveal">Moksha Motorsports</h2>
-      <p class="sec-sub reveal">Vice-Captain, Suspension Lead and Finance Coordinator &nbsp;/&nbsp; 2024 to 2026</p>
+      <p class="sec-sub reveal">Vice-Captain &nbsp;/&nbsp; eBAJA SAEINDIA &nbsp;/&nbsp; 2024 to 2026</p>
     </div>
-    <div class="moksha-grid">
-      <div class="moksha-text">
-        <p class="big reveal">The IIT Gandhinagar student team building an electric off-road vehicle for eBAJA SAEINDIA.</p>
-        <div class="stats" id="moksha-stats"></div>
-        <button class="open-btn magnet" data-open="moksha"><span>Open project</span><i>&rarr;</i></button>
-      </div>
-      <figure class="susp reveal">
-        <canvas id="susp" aria-label="Interactive double-wishbone suspension sketch"></canvas>
-        <figcaption><span>Drag the wheel</span><span id="susp-read">camber 0.0&deg;</span></figcaption>
-      </figure>
-    </div>
-    <div class="strip" id="moksha-strip"></div>
+    <p class="big reveal">As Vice-Captain I oversaw the team&rsquo;s technical, administrative, financial and sponsorship work, and served as its welder.</p>
+    <div class="gallery" id="gallery"></div>
   </section>
 
   <section id="contact" class="section contact">
@@ -111,8 +97,8 @@
         <canvas class="stage-canvas"></canvas>
         <video class="stage-video" muted loop playsinline preload="none"></video>
         <img class="stage-img" alt="">
-        <span class="stage-cap"></span>
       </div>
+      <p class="stage-cap"></p>
       <div class="thumbs"></div>
     </div>
     <article class="case-info">
@@ -126,6 +112,14 @@
       <div class="case-links"></div>
     </article>
   </div>
+</div>
+
+<div class="lb" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Photo viewer">
+  <img class="lb-img" alt="">
+  <p class="lb-cap"></p>
+  <button class="lb-prev magnet" aria-label="Previous photo">&larr;</button>
+  <button class="lb-next magnet" aria-label="Next photo">&rarr;</button>
+  <button class="lb-close magnet" aria-label="Close">Close <i>&times;</i></button>
 </div>
 
 <script src="js/fluid.js"></script>

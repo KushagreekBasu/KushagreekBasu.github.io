@@ -51,7 +51,7 @@
       role: "IIT Gandhinagar &nbsp;·&nbsp; Advisor: Prof. Shubhangi Bansude",
       lede: "Simulating air flowing over a wing is accurate but slow, which makes trying out many shapes tedious. We train a neural operator, a network that learns whole flow fields rather than single numbers, to predict turbulent (RANS) flow around airfoils from only a sparse scatter of data points. The airfoil&rsquo;s geometry is encoded into the input, and physics such as mass conservation and the no-slip wall is built into the network and its loss, so the model captures surface pressure, skin friction and the recirculation bubble behind a stalling wing, including on shapes it has never seen.",
       stats: [], points: [],
-      peek: { scene: "fno" },
+      peek: { img: "assets/fno/recirculation_thumb.jpg", tag: "GP-FNO · recirculation bubble" },
       media: [
         { img: "assets/fno/recirculation_streamlines.jpg", light: true, cap: "Recirculation bubbles behind stalling airfoils: Fluent against GP-FNO, with streamlines" },
         { img: "assets/fno/heldout_surfaces.jpg", light: true, cap: "Surface pressure and skin friction on held-out cases" },
@@ -69,8 +69,12 @@
       role: "IIT Gandhinagar &nbsp;·&nbsp; With A. Sinha &nbsp;·&nbsp; Advisor: Prof. Shubhangi Bansude",
       lede: "When a wing tilts too steeply it stalls: the air peels away from its surface and leaves a large, unsteady wake that is hard to measure everywhere. A physics-informed neural network (PINN) can fill in the whole flow from a handful of measurements, because besides matching the data it must also obey the governing equations, here the Reynolds-averaged Navier&ndash;Stokes (RANS) equations with the Spalart&ndash;Allmaras turbulence model. We built a geometry-aware PINN that reconstructs the separated flow around a NACA 0012 airfoil in deep stall from sparse data.",
       stats: [], points: [],
-      peek: { scene: "pinn" },
-      media: [{ scene: "pinn", cap: "Illustration: deep-stall wake behind an airfoil, with sparse observations" }],
+      peek: { img: "assets/pinn_deep_stall.jpg", tag: "Deep stall · NACA 0012" },
+      media: [
+        { img: "assets/pinn_deep_stall.jpg", cap: "Illustration of deep stall: the separated, turbulent wake behind a NACA 0012 airfoil" },
+        { img: "assets/pinn_fields.jpg", light: true, cap: "PINN prediction against the RANS reference: velocity and pressure fields" },
+        { scene: "pinn", cap: "Illustration: deep-stall wake behind an airfoil, with sparse observations" }
+      ],
       pubs: [],
       links: [["Poster", "https://drive.google.com/drive/folders/1l2I8d9l82uNp2jDTn-PUjFvqcvj9woEW?usp=sharing"]]
     }

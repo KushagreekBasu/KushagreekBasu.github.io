@@ -31,8 +31,9 @@
       role: "FLAME Lab, Indian Institute of Science, Bengaluru &nbsp;·&nbsp; Advisor: Prof. Konduri Aditya",
       lede: "A scramjet breathes air at several times the speed of sound. If the pressure inside rises too far, its shock waves are pushed out of the intake and the engine &ldquo;unstarts&rdquo;, choking its own airflow. We are teaching a controller to fire small wall jets in time to stop this. The flow is computed with RANS simulations in OpenFOAM; a few wall pressure sensors, placed using co-kurtosis, give early warning; and learned world models (GRU, Koopman and Dreamer-style surrogates) forecast how the flow will evolve, so that a reinforcement-learning agent (Soft Actor-Critic) can practise cheaply and call the expensive CFD only when the models are unsure.",
       stats: [], points: [],
-      peek: { video: "assets/scramjet/inlet_velocity.mp4", tag: "OpenFOAM · inlet velocity" },
+      peek: { img: "assets/scramjet/x51a_waverider.jpg", tag: "X-51A Waverider · scramjet-powered" },
       media: [
+        { img: "assets/scramjet/x51a_waverider.jpg", cap: "X-51A Waverider, a scramjet-powered vehicle (artist's concept, U.S. Air Force, public domain)" },
         { video: "assets/scramjet/inlet_velocity.mp4", poster: "assets/scramjet/inlet_poster.jpg", cap: "OpenFOAM simulation of the inlet and isolator: velocity magnitude" },
         { img: "assets/scramjet/started_flow.jpg", light: true, cap: "Started inlet: numerical schlieren, pressure field and wall pressure" },
         { img: "assets/scramjet/wm_forecast.jpg", light: true, cap: "CFD against the GRU world-model forecast around the unstart, with error maps" },
@@ -171,17 +172,20 @@
   });
 
   /* ---------------- peek preview ---------------- */
-  const peek = $(".peek"), peekCanvas = $(".peek-canvas"), peekVideo = $(".peek-video"), peekTag = $(".peek-tag");
+  const peek = $(".peek"), peekCanvas = $(".peek-canvas"), peekVideo = $(".peek-video"), peekImg = $(".peek-img"), peekTag = $(".peek-tag");
   let peekRunner = null, peekOn = false;
   const P = { x: 0, y: 0, tx: 0, ty: 0, s: 0.6, ts: 0.6, r: 0, tr: 0 };
   function showPeek(p) {
     if (!fine) return;
     if (peekRunner) { peekRunner.stop(); peekRunner = null; }
-    peek.classList.remove("video");
+    peek.classList.remove("video", "image");
     peekVideo.pause();
     const ctx = peekCanvas.getContext("2d");
     ctx && ctx.clearRect(0, 0, peekCanvas.width, peekCanvas.height);
-    if (p.peek.video) {
+    if (p.peek.img) {
+      if (peekImg.getAttribute("src") !== p.peek.img) peekImg.src = p.peek.img;
+      peek.classList.add("image");
+    } else if (p.peek.video) {
       if (peekVideo.getAttribute("src") !== p.peek.video) peekVideo.src = p.peek.video;
       peekVideo.play().catch(() => {});
       peek.classList.add("video");

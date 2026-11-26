@@ -15,7 +15,6 @@
         { video: "assets/dns_orbit.mp4", poster: "assets/dns_hero.jpg", cap: "PeleC DNS at peak heat release: OH glow with vortex tubes" },
         { img: "assets/dns_hero.jpg", cap: "OH radical (blue) and vortex tubes (orange) at peak heat release" },
         { img: "assets/dns_vortex.jpg", cap: "Vortex tubes coloured by temperature: cold fuel side blue, hot side orange" },
-        { img: "assets/dns_temperature.jpg", cap: "Temperature volume after ignition" },
         { img: "assets/dns_flame_sheet.jpg", cap: "Heat-release surface coloured by OH, with vorticity haze" },
         { img: "assets/dns_oh.jpg", cap: "OH volume as the layer burns" },
         { img: "assets/les/dns_filtered_coarse.jpg", light: true, cap: "DNS, the filtered DNS an LES should reproduce, and a coarse run with no closure" },
@@ -107,56 +106,30 @@
   function scaled(c, s) { return [c[0] * s, c[1] * s, c[2] * s]; }
 
   if (fluid) {
-    const ptr = { x: 0, y: 0, px: 0, py: 0, moved: false, init: false };
-    const onMove = (cx, cy) => {
-      const r = fluidCanvas.getBoundingClientRect();
-      const x = cx / r.width, y = 1 - cy / r.height;
-      if (!ptr.init) { ptr.px = x; ptr.py = y; ptr.init = true; }
-      ptr.x = x; ptr.y = y; ptr.moved = true;
-    };
-    window.addEventListener("pointermove", (e) => onMove(e.clientX, e.clientY), { passive: true });
-    window.addEventListener("touchmove", (e) => { const t = e.touches[0]; if (t) onMove(t.clientX, t.clientY); }, { passive: true });
-    window.addEventListener("pointerdown", (e) => {
-      const r = fluidCanvas.getBoundingClientRect();
-      const x = e.clientX / r.width, y = 1 - e.clientY / r.height;
-      for (let i = 0; i < 6; i++) {
-        const a = i / 6 * Math.PI * 2;
-        fluid.push(x, y, Math.cos(a) * 900, Math.sin(a) * 900, scaled(colorAt(hueT + i), 0.6), 0.12);
-      }
-    });
-    let idle = 0, lastScroll = window.scrollY;
-    fluid.onFrame = (dt, now) => {
+    const narrow = window.innerWidth < 700;
+    const k = narrow ? 0.4 : 1;
+    const rate = (reduce ? 0.35 : 1.3) * (narrow ? 0.6 : 1);
+    const rad = narrow ? 0.12 : 0.3;
+    fluid.onFrame = (dt) => {
       hueT += dt * 0.35;
-      if (ptr.moved) {
-        const dx = (ptr.x - ptr.px) * fluid.opt.force, dy = (ptr.y - ptr.py) * fluid.opt.force;
-        if (Math.abs(dx) + Math.abs(dy) > 0.5) fluid.push(ptr.x, ptr.y, dx, dy, scaled(colorAt(hueT * 2.2 + ptr.x * 4.5 + ptr.y * 2.0), 0.24));
-        ptr.px = ptr.x; ptr.py = ptr.y; ptr.moved = false; idle = 0;
-      } else idle += dt;
-      const sc = window.scrollY - lastScroll; lastScroll = window.scrollY;
-      if (Math.abs(sc) > 2 && Math.random() < 0.35) {
-        const x = Math.random();
-        fluid.push(x, sc > 0 ? 0.02 : 0.98, (Math.random() - 0.5) * 300, (sc > 0 ? 1 : -1) * Math.min(1400, Math.abs(sc) * 40), scaled(colorAt(hueT + x * 3), 0.22), 0.18);
+      if (Math.random() < dt * rate) {
+        const x = 0.12 + Math.random() * 0.76;
+        fluid.push(x, 0.0, (Math.random() - 0.5) * 500, 700 + Math.random() * 900, scaled(Math.random() < 0.5 ? FIRE : ICE, (0.35 + Math.random() * 0.25) * k), rad);
       }
-      if (!reduce && Math.random() < dt * (idle > 2 ? 1.6 : 0.6)) {
-        const x = 0.15 + Math.random() * 0.7;
-        fluid.push(x, 0.0, (Math.random() - 0.5) * 500, 700 + Math.random() * 900, scaled(Math.random() < 0.5 ? FIRE : ICE, 0.35 + Math.random() * 0.25), 0.3);
+      if (Math.random() < dt * rate * 0.25) {
+        const left = Math.random() < 0.5, y = 0.2 + Math.random() * 0.6;
+        fluid.push(left ? 0.0 : 1.0, y, (left ? 1 : -1) * (600 + Math.random() * 700), (Math.random() - 0.3) * 400, scaled(colorAt(hueT + y * 3), 0.3 * k), rad * 0.85);
       }
     };
-    for (let i = 0; i < 9; i++) {
+    const n0 = narrow ? 4 : 9;
+    for (let i = 0; i < n0; i++) {
       const x = 0.1 + Math.random() * 0.8, y = 0.15 + Math.random() * 0.6;
-      fluid.push(x, y, (Math.random() - 0.5) * 2200, (Math.random() - 0.3) * 2200, scaled(i % 2 ? FIRE : ICE, 0.7), 0.35);
+      fluid.push(x, y, (Math.random() - 0.5) * 2200, (Math.random() - 0.3) * 2200, scaled(i % 2 ? FIRE : ICE, 0.7 * k), narrow ? 0.14 : 0.35);
     }
     document.addEventListener("visibilitychange", () => { fluid.paused = document.hidden; });
   }
 
   document.documentElement.dataset.fluid = fluid ? "on" : "off";
-  if (!fine) {
-    const sub = $("#research .sec-sub");
-    if (sub) sub.textContent = "Tap a project to open it.";
-    const hint = $(".hint");
-    if (hint) hint.lastChild.textContent = "The background is a live fluid simulation. Touch to stir it.";
-  }
-  if (!fluid) { const hint = $(".hint"); if (hint) hint.style.display = "none"; }
 
   /* ---------------- cursor ---------------- */
   const cur = $(".cursor"), dot = $(".cursor-dot"), ring = $(".cursor-ring"), label = $(".cursor-label");

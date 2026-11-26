@@ -8,26 +8,19 @@
       tags: "DNS · LES · PeleC · ML", years: "2026 &mdash;",
       eyebrow: "Jul 2026 to present &nbsp;/&nbsp; ME 499 research",
       role: "Computational Combustion and Machine Learning Lab, IIT Gandhinagar &nbsp;·&nbsp; Advisor: Prof. Shubhangi Bansude",
-      lede: "A 3-D direct numerical simulation of an igniting hydrogen&ndash;air mixing layer, used as ground truth to learn what a coarse large-eddy-simulation grid cannot resolve: the filtered reaction rate.",
-      stats: [["20.2 M", "grid cells, 9 chemical species"], ["25,000", "core-hours on PARAM Ananta"], ["7.5 %", "ignition time vs Ohta et al. (2021)"], ["1 %", "offline heat-release error of the best closure, vs 23 % with none"]],
-      points: [
-        "Ran the DNS in PeleC, with mass and energy conserved to round-off.",
-        "Filtered it to three LES grids and trained reaction-rate closures on the filtered data.",
-        "Coupled the closures to PeleC through a C++ hook verified to 10<sup>&minus;4</sup>; inside the solver the flow erases 60&ndash;80 % of the offline error within 2 &micro;s.",
-        "This led to solver-in-the-loop training (oracle nudging, DAgger, ensemble Kalman inversion); DAgger cut the misfit by 16 %.",
-        "A learned filtered density function, used in a hybrid flamelet table, cuts heat-release error at unseen times by 30 %.",
-        "Found and patched two PeleLMeX defects, each confirmed by A/B tests."
-      ],
+      lede: "Hydrogen flames are thin, fast and tangled up in turbulence, so simulating every detail takes a supercomputer for days. Practical simulations use a coarser grid (large-eddy simulation, LES) that cannot see the smallest eddies or the flame front itself, so they must estimate how fast fuel burns inside each grid cell. I ran a direct numerical simulation (DNS) of an igniting hydrogen&ndash;air mixing layer in PeleC, filtered it down to LES resolution, and use it to teach machine-learned closures for the filtered reaction rate, trained offline, with the solver in the loop, and through learned filtered density functions. The goal is simple: a cheap simulation that burns the way the real flame does.",
+      stats: [], points: [],
       peek: { video: "assets/dns_orbit.mp4" },
       media: [
-        { video: "assets/dns_orbit.mp4", poster: "assets/dns_hero.jpg", cap: "Orbit at peak heat release: OH glow with vortex tubes" },
-        { img: "assets/dns_hero.jpg", cap: "OH radical (blue) and vortex tubes (orange), t = 0.364 ms" },
+        { video: "assets/dns_orbit.mp4", poster: "assets/dns_hero.jpg", cap: "PeleC DNS at peak heat release: OH glow with vortex tubes" },
+        { img: "assets/dns_hero.jpg", cap: "OH radical (blue) and vortex tubes (orange) at peak heat release" },
         { img: "assets/dns_vortex.jpg", cap: "Vortex tubes coloured by temperature: cold fuel side blue, hot side orange" },
-        { img: "assets/dns_temperature.jpg", cap: "Temperature volume, t = 0.505 ms" },
+        { img: "assets/dns_temperature.jpg", cap: "Temperature volume after ignition" },
         { img: "assets/dns_flame_sheet.jpg", cap: "Heat-release surface coloured by OH, with vorticity haze" },
-        { img: "assets/dns_oh.jpg", cap: "OH volume, t = 0.436 ms" },
-        { img: "assets/dns_T_evolution.jpg", cap: "Mid-plane temperature from ignition to 0.6 ms" },
-        { img: "assets/dns_flame_structure.jpg", cap: "Flame structure in mixture-fraction space, coloured by OH" }
+        { img: "assets/dns_oh.jpg", cap: "OH volume as the layer burns" },
+        { img: "assets/les/dns_filtered_coarse.jpg", light: true, cap: "DNS, the filtered DNS an LES should reproduce, and a coarse run with no closure" },
+        { img: "assets/les/closure_fields.jpg", light: true, cap: "Temperature from coarse runs with different closures, against the filtered-DNS target" },
+        { img: "assets/les/heat_release.jpg", light: true, cap: "Heat release over time: filtered DNS against coarse runs restarted from it" }
       ],
       pubs: [], links: []
     },
@@ -37,28 +30,17 @@
       tags: "RANS · RL · surrogates", years: "2026 &mdash;",
       eyebrow: "Apr 2026 to present &nbsp;/&nbsp; Visiting research student",
       role: "FLAME Lab, Indian Institute of Science, Bengaluru &nbsp;·&nbsp; Advisor: Prof. Konduri Aditya",
-      lede: "Teaching a controller to fire wall jets before a scramjet inlet unstarts, the moment its shock system is pushed out and the engine loses its airflow. Because every millisecond of CFD is expensive, the agent learns mostly inside learned world models of the flow.",
-      stats: [["7.8&ndash;8.1&times;", "freestream pressure at the outlet: the unstart boundary"], ["10", "wall sensors chosen by co-kurtosis, warning about 0.5 ms ahead"], ["2.8 %", "GRU world-model sensor error 1 ms ahead, half that of DMDc"], ["47", "core-hours per 0.1 ms of CFD"]],
-      points: [
-        "Modelled the inlet&ndash;isolator in 2-D RANS (OpenFOAM, k&ndash;&omega; SST); the ramp-shock angle is within 0.2 % of oblique-shock theory.",
-        "Showed that jets fired early prevent unstart, and posed jet control as an event-triggered Soft Actor-Critic problem.",
-        "Picked ten wall sensors by co-kurtosis, a measure of extreme events; they warn of unstart about half a millisecond ahead.",
-        "Benchmarked six surrogates (DMDc, DeepONet, Koopman autoencoder, Dreamer, GRU world model); the GRU world model forecasts the sensors 1 ms ahead within 2.8 %.",
-        "Working towards: training the agent against an ensemble of these world models, calling CFD only when the members disagree."
-      ],
+      lede: "A scramjet breathes air at several times the speed of sound. If the pressure inside rises too far, its shock waves are pushed out of the intake and the engine &ldquo;unstarts&rdquo;, choking its own airflow. We are teaching a controller to fire small wall jets in time to stop this. The flow is computed with RANS simulations in OpenFOAM; a few wall pressure sensors, placed using co-kurtosis, give early warning; and learned world models (GRU, Koopman and Dreamer-style surrogates) forecast how the flow will evolve, so that a reinforcement-learning agent (Soft Actor-Critic) can practise cheaply and call the expensive CFD only when the models are unsure.",
+      stats: [], points: [],
       peek: { video: "assets/scramjet/inlet_velocity.mp4", tag: "OpenFOAM · inlet velocity" },
       media: [
-        { video: "assets/scramjet/inlet_velocity.mp4", poster: "assets/scramjet/inlet_poster.jpg", cap: "OpenFOAM simulation of the inlet and isolator: velocity magnitude, 0 to 740 m/s" },
+        { video: "assets/scramjet/inlet_velocity.mp4", poster: "assets/scramjet/inlet_poster.jpg", cap: "OpenFOAM simulation of the inlet and isolator: velocity magnitude" },
         { img: "assets/scramjet/started_flow.jpg", light: true, cap: "Started inlet: numerical schlieren, pressure field and wall pressure" },
-        { img: "assets/scramjet/sensors.jpg", light: true, cap: "The ten wall sensors picked by co-kurtosis, numbered in pick order" },
-        { img: "assets/scramjet/wm_forecast.jpg", light: true, cap: "CFD vs GRU world-model forecast around the unstart onset, with error maps against DMDc" },
-        { img: "assets/scramjet/lead_error.jpg", light: true, cap: "Forecast error against lead time for six surrogate models, sensors and whole field" },
+        { img: "assets/scramjet/wm_forecast.jpg", light: true, cap: "CFD against the GRU world-model forecast around the unstart, with error maps" },
+        { img: "assets/scramjet/lead_error.jpg", light: true, cap: "Forecast error against lead time for the surrogate models" },
         { scene: "scramjet", cap: "Illustration: ramp shock, shock train, wall sensors and control jets" }
       ],
-      pubs: [
-        "<b>SAROD 2026</b>, Bengaluru &mdash; first author, oral presentation",
-        "<b>NAPC 2027</b>, IIT Hyderabad &mdash; first author, accepted"
-      ],
+      pubs: [],
       links: []
     },
     {
@@ -67,28 +49,16 @@
       tags: "GP-FNO · RANS · airfoils", years: "2026 &mdash;",
       eyebrow: "Jan 2026 to present &nbsp;/&nbsp; Co-first author with A. Sinha",
       role: "IIT Gandhinagar &nbsp;·&nbsp; Advisor: Prof. Shubhangi Bansude",
-      lede: "A Fourier neural operator that learns turbulent flow over airfoils from sparse data, with the geometry and the physics built into the network.",
-      stats: [["5 %", "of nodes seen per training solution"], ["2.7 %", "surface-pressure error, held-out cases"], ["1.1 %", "lift error"], ["6.2 %", "skin-friction error, never supervised"]],
-      points: [
-        "Trained on a body-fitted grid from 88 RANS solutions; the training data follow NASA&rsquo;s CFL3D and Ladson&rsquo;s NACA 0012 experiments.",
-        "Studied its inductive and learning biases, with physics placed in the network or in the loss; enforcing mass conservation cut overfitting tenfold.",
-        "Building no-slip into the network is what lets it locate flow separation.",
-        "Of eight architectures, including U-Net and Transolver, it is the cheapest (6.5 GFLOP) and ties the best on surface pressure.",
-        "On eight unseen airfoils, checked against OpenFOAM, its median errors are 5.3 % in surface pressure and 3.2 % in lift."
-      ],
+      lede: "Simulating air flowing over a wing is accurate but slow, which makes trying out many shapes tedious. We train a neural operator, a network that learns whole flow fields rather than single numbers, to predict turbulent (RANS) flow around airfoils from only a sparse scatter of data points. The airfoil&rsquo;s geometry is encoded into the input, and physics such as mass conservation and the no-slip wall is built into the network and its loss, so the model captures surface pressure, skin friction and the recirculation bubble behind a stalling wing, including on shapes it has never seen.",
+      stats: [], points: [],
       peek: { scene: "fno" },
       media: [
-        { img: "assets/fno/architecture.jpg", light: true, cap: "GP-FNO: geometry encoding, dual-path Fourier layers and the physics-enhanced loss" },
-        { img: "assets/fno/heldout_fields.jpg", light: true, cap: "Held-out case: reference (Fluent) vs GP-FNO, with absolute error" },
+        { img: "assets/fno/recirculation_streamlines.jpg", light: true, cap: "Recirculation bubbles behind stalling airfoils: Fluent against GP-FNO, with streamlines" },
         { img: "assets/fno/heldout_surfaces.jpg", light: true, cap: "Surface pressure and skin friction on held-out cases" },
         { img: "assets/fno/new_airfoils.jpg", light: true, cap: "An unseen airfoil, checked against OpenFOAM" },
         { scene: "fno", cap: "Illustration: flow past a cambered airfoil, Fourier modes and sparse sample points" }
       ],
-      pubs: [
-        "<b>AeSI CFD Symposium 2026</b>, IIT Madras &mdash; oral presentation",
-        "<b>TFEC 2027</b>, Dallas &mdash; accepted",
-        "<b>Journal manuscript</b> &mdash; to be submitted to Physics of Fluids"
-      ],
+      pubs: [],
       links: []
     },
     {
@@ -97,15 +67,11 @@
       tags: "PINN · RANS · sparse data", years: "2025 &mdash; 2026",
       eyebrow: "Aug 2025 to Jan 2026",
       role: "IIT Gandhinagar &nbsp;·&nbsp; With A. Sinha &nbsp;·&nbsp; Advisor: Prof. Shubhangi Bansude",
-      lede: "Rebuilding a separated deep-stall flow from 5 % of the field, with the RANS equations and the Spalart&ndash;Allmaras model as the constraint.",
-      stats: [["Top 5", "best poster, International AI-CFD Symposium 2026"], ["25&deg;", "NACA 0012 angle of attack"], ["5.8 %", "relative L<sub>2</sub> error in u (5.4 % v, 7.0 % p)"], ["2 %", "lift error"]],
-      points: [
-        "Built a geometry-aware PINN constrained by RANS with Spalart&ndash;Allmaras.",
-        "From 5 % of the field it rebuilds the whole RANS flow, including the separated wake."
-      ],
+      lede: "When a wing tilts too steeply it stalls: the air peels away from its surface and leaves a large, unsteady wake that is hard to measure everywhere. A physics-informed neural network (PINN) can fill in the whole flow from a handful of measurements, because besides matching the data it must also obey the governing equations, here the Reynolds-averaged Navier&ndash;Stokes (RANS) equations with the Spalart&ndash;Allmaras turbulence model. We built a geometry-aware PINN that reconstructs the separated flow around a NACA 0012 airfoil in deep stall from sparse data.",
+      stats: [], points: [],
       peek: { scene: "pinn" },
-      media: [{ scene: "pinn", cap: "Illustration: deep-stall wake behind an airfoil at 25°, with sparse observations" }],
-      pubs: ["<b>International AI-CFD Symposium 2026</b> &mdash; poster, top 5 among master&rsquo;s and PhD presenters"],
+      media: [{ scene: "pinn", cap: "Illustration: deep-stall wake behind an airfoil, with sparse observations" }],
+      pubs: [],
       links: [["Poster", "https://drive.google.com/drive/folders/1l2I8d9l82uNp2jDTn-PUjFvqcvj9woEW?usp=sharing"]]
     }
   ];
